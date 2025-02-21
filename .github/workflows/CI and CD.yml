@@ -16,30 +16,30 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Set Up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install Dependencies
+      - name: Install Project Dependencies
         run: npm install
 
-      - name: Set BASE_URL for Local Testing
+      - name: Configure Local Environment Variables
         run: echo "BASE_URL=http://localhost:8083" >> $GITHUB_ENV
 
-      - name: Build Project (Run Locally)
-        run: npm start &  # Start the app in the background
+      - name: Start Local Server
+        run: npm start &  # Start the application in the background
 
-      - name: Run Unit Tests
+      - name: Execute Unit Tests
         run: npm run test:unit
 
-      - name: Set up Playwright for UI Tests
+      - name: Install Playwright and Dependencies
         run: npx playwright install
 
-      - name: Run UI Tests (Local)
+      - name: Execute UI Tests (Local)
         run: npm run test:ui
 
-      - name: Display SoftUni Username
+      - name: Display Developer Identifier
         run: echo "yamacheva"
 
   deploy:
@@ -47,7 +47,7 @@ jobs:
     needs: build-and-test
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Deploy Application to Render
@@ -57,8 +57,14 @@ jobs:
           api_key: ${{ secrets.MY_RENDER_API_KEY }}
           wait_deploy: true
 
-      - name: Set BASE_URL for Deployed Testing
+      - name: Configure Deployed Environment Variables
         run: echo "BASE_URL=https://yamacheva-prepexam4.onrender.com" >> $GITHUB_ENV
 
-      - name: Smoke UI Tests (Deployed App)
+      - name: Install Project Dependencies
+        run: npm install
+
+      - name: Install Playwright and Dependencies
+        run: npx playwright install
+
+      - name: Execute Smoke UI Tests (Deployed App)
         run: npm run test:ui
