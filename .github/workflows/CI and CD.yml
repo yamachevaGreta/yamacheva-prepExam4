@@ -24,8 +24,11 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Build Project
-        run: npm start &
+      - name: Set BASE_URL for Local Testing
+        run: echo "BASE_URL=http://localhost:8083" >> $GITHUB_ENV
+
+      - name: Build Project (Run Locally)
+        run: npm start &  # Start the app in the background
 
       - name: Run Unit Tests
         run: npm run test:unit
@@ -33,7 +36,7 @@ jobs:
       - name: Set up Playwright for UI Tests
         run: npx playwright install
 
-      - name: Run UI Tests
+      - name: Run UI Tests (Local)
         run: npm run test:ui
 
       - name: Display SoftUni Username
@@ -53,3 +56,9 @@ jobs:
           service_id: ${{ secrets.MY_RENDER_DEPLOY_ID }}
           api_key: ${{ secrets.MY_RENDER_API_KEY }}
           wait_deploy: true
+
+      - name: Set BASE_URL for Deployed Testing
+        run: echo "BASE_URL=https://yamacheva-prepexam4.onrender.com" >> $GITHUB_ENV
+
+      - name: Smoke UI Tests (Deployed App)
+        run: npm run test:ui
