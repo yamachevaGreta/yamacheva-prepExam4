@@ -37,24 +37,16 @@ jobs:
       - name: Run UI Tests
         run: npm run test:ui
 
-#   deploy:
-#     runs-on: ubuntu-latest
-#     needs: build-and-test   
-#     steps:
-#         - name: Checkout Code
-#           uses: actions/checkout@v4
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build-and-test   
+    steps:
+        - name: Checkout Code
+          uses: actions/checkout@v4
   
-#         - name: Deploy Application to Render
-#           uses: JorgeLNJunior/render-deploy@v1.4.4
-#           with:
-#             service_id: ${{ secrets.MY_RENDER_DEPLOY_ID }}
-#             api_key: ${{ secrets.MY_RENDER_API_KEY }}
-#             wait_deploy: true
-    
-    softUni:
-      runs-on: ubuntu-latest
-      
-      steps:
-      - name: Display SoftUni Username
-        run: |
-          echo "SoftUni Username: yamacheva"
+        - name: Deploy Application to Render
+          uses: JorgeLNJunior/render-deploy@v1.4.4
+          with:
+            service_id: ${{ secrets.MY_RENDER_DEPLOY_ID }}
+            api_key: ${{ secrets.MY_RENDER_API_KEY }}
+            wait_deploy: true
